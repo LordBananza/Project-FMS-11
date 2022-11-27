@@ -1,8 +1,8 @@
-//David's Variables
 let music;
-let bits;
 let endMusic;
-let dingDavid;
+let ding;
+let x;
+let y;
 let pointerx;
 let pointery;
 let rectx;
@@ -12,6 +12,33 @@ let rect2y;
 let font;
 let trayx;
 let endMusicPlay = false;
+function loaded() {
+  music.play();
+}
+function preload() {
+  soundFormats('mp3', 'ogg');
+  music = createAudio('BGM.mp3', loaded);
+  endMusic = loadSound('EndMusic.mp3');
+  ding = loadSound('Ding.mp3');
+  music.volume(0.5);
+  music.play();
+  font = loadFont('EndFont.ttf');
+}
+function setup() {
+  createCanvas(displayWidth, displayHeight);
+  house = loadImage('Home.png');
+  help = loadImage('Help.png');
+  pointer = loadImage('pointer.png');
+  x = displayWidth;
+  y = displayHeight;
+  trayx = displayWidth - 500;
+  pointerx = displayWidth/2;
+  pointery = displayHeight/2;
+  rectx = pointerx - 200;
+  recty = pointery + 100;
+  rect2x = displayWidth/2 -200;
+  rect2y = displayHeight/2 + 100
+}
 let finalx = 0;
 let finaly = 0;
 let shapex = Math.random() * 150;
@@ -120,7 +147,7 @@ let placed19 = false;
 let placed20 = false;
 let xOffset = 0;
 let yOffset = 0;
-let davidScore = 0;
+let score = 0;
 let scoreSubtractor = 0;
 let phase1 = false;
 let phase2 = false;
@@ -131,148 +158,7 @@ let ending = false;
 let overReset = false;
 let overExit = false;
 
-
-//Daniel's game
-var stage = 1;
-var score = 0;
-var ding;
-var help;
-var preview2;
-
-//Ashton's game
-//game1
-var score = 0;
-var rectWidth = 0;
-var rectHeight = 0;
-var rectSetup = [0, 0, 0, 0, 0, 0, 0, 0];
-var cirSetup = [0, 0, 0, 0, 0, 0, 0];
-var elliSetup = [0, 0, 0, 0, 0, 0, 0, 0];
-var triSetup = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var randPos = [0, 1, 2, 3, 4, 5, 6, 7];
-var strokeColor =["black", "blue", "green"];
-var tries = 4;
-var loseTry = false;
-var gameOver = false;
-var reveal = false;
-var matchHelp;
-var preview;
-let playedEl = false;
-let playedCir = false;
-let playedRect = false;
-let playedTri = false;
-
-
-var rect1Clicked = false;
-var rect2Clicked = false;
-var cir1Clicked = false;
-var cir2Clicked = false;
-var el1Clicked = false;
-var el2Clicked = false;
-var tri1Clicked = false;
-var tri2Clicked = false;
-
-var rectMatched = false;
-var cirMatched = false;
-var elMatched = false;
-var triMatched = false;
-
-var stroker1 = strokeColor[0];
-var stroker2 = strokeColor[0];
-var strokec1 = strokeColor[0];
-var strokec2 = strokeColor[0];
-var strokee1 = strokeColor[0];
-var strokee2 = strokeColor[0];
-var stroket1 = strokeColor[0];
-var stroket2 = strokeColor[0];
-
-function randomize(){//game1
-  
-  var randPos = [0, 1, 2, 3, 4, 5, 6, 7];
-  
-  rectSetup[0] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  cirSetup[0] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  elliSetup[0] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  triSetup[0] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  rectSetup[1] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  cirSetup[1] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  elliSetup[1] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-  triSetup[1] = randPos.splice(Math.floor(random(0, randPos.length - 1)),1);
-}
-
-function setPositions(){//game1
-  
-  randomize();
-  
-  var positions = [[displayWidth / 5, displayHeight / 5], [2 * displayWidth / 5, displayHeight / 5], [3 * displayWidth / 5, displayHeight / 5], [4 * displayWidth / 5, displayHeight / 5], [displayWidth / 5, 3 * displayHeight / 5], [2 * displayWidth / 5, 3 * displayHeight / 5], [3 * displayWidth / 5, 3 * displayHeight / 5], [4 * displayWidth / 5, 3 * displayHeight / 5]];
-  
-  rectSetup[2] = positions[rectSetup[0]][0];
-  rectSetup[3] = positions[rectSetup[0]][1];
-  rectSetup[4] = positions[rectSetup[1]][0];
-  rectSetup[5] = positions[rectSetup[1]][1];
-  rectSetup[6] = random(150, 200);
-  rectSetup[7] = random(150, 200);
-  
-  cirSetup[6] = random(150, 200);
-  cirSetup[2] = positions[cirSetup[0]][0];
-  cirSetup[3] = positions[cirSetup[0]][1];
-  cirSetup[4] = positions[cirSetup[1]][0];
-  cirSetup[5] = positions[cirSetup[1]][1];
-  
-  elliSetup[2] = positions[elliSetup[0]][0];
-  elliSetup[3] = positions[elliSetup[0]][1];
-  elliSetup[4] = positions[elliSetup[1]][0];
-  elliSetup[5] = positions[elliSetup[1]][1];
-  elliSetup[6] = random (50, 200);
-  elliSetup[7] = random (50, 200);
-  
-  triSetup[2] = positions[triSetup[0]][0];
-  triSetup[3] = positions[triSetup[0]][1];
-  triSetup[4] = triSetup[2] 
-  triSetup[5] = triSetup[3] + 200;
-  triSetup[6] = triSetup[2] + 200;
-  triSetup[7] = triSetup[3]
-  triSetup[8] = positions[triSetup[1]][0];
-  triSetup[9] = positions[triSetup[1]][1];
-  triSetup[10] = triSetup[8];
-  triSetup[11] = triSetup[9] + 200;
-  triSetup[12] = triSetup[8] + 200;
-  triSetup[13] = triSetup[9];
-  
-}
-
-function setup() {
-  menu();
-  setPositions();
-  house = loadImage('Home.png');
-  help = loadImage('Help.png');
-  pointer = loadImage('pointer.png');
-  bits = loadImage('game3.png');
-  preview = loadImage('Screenshot (208).png');
-  preview2 = loadImage('preview2.png');
-  trayx = displayWidth - 500;
-  pointerx = displayWidth/2;
-  pointery = displayHeight/2;
-  rectx = pointerx - 200;
-  recty = pointery + 100;
-  rect2x = displayWidth/2 -200;
-  rect2y = displayHeight/2 + 100;
-  
-}
-
-function preload() {
-  soundFormats("mp3", 'ogg');
-  music = createAudio('BGM.mp3');
-  endMusic = loadSound('EndMusic.mp3');
-  ding = loadSound("Ding.mp3");
-  help = loadImage("Help.png");
-  home = loadImage("Home.png");
-  music.volume(0.5);
-  font = loadFont('EndFont.ttf');
-}
-
 function draw() {
-  //David's Game
-  if (stage == 5) {
   background(255, 150, 150);
   gui();
     
@@ -321,7 +207,9 @@ function draw() {
     fill (0,255,0);
     stroke(0);
   }
+  if (placed20) {
   rect(shapex, shapey, 20, 20);
+  }
   fill(255);
   stroke(0);
   if (
@@ -833,7 +721,7 @@ function draw() {
     fill (0,255,0);
     stroke(0);
   }
-  //rect(shapex20,shapey20,20,20);
+  rect(shapex20,shapey20,20,20);
   fill(255);
   stroke(0);
   ++scoreSubtractor;
@@ -869,484 +757,13 @@ if (
     } else {
       overExit = false;
     }
-  if (placed && placed2 && placed3 && placed4 && placed5 && placed6 && placed7 && placed8 && placed9 && placed10 && placed11 && placed12 && placed13 && placed14 && placed15 && placed16 && placed17 && placed18 && placed19  || ending == true) {
+  if (placed && placed2 && placed3 && placed4 && placed5 && placed6 && placed7 && placed8 && placed9 && placed10 && placed11 && placed12 && placed13 && placed14 && placed15 && placed16 && placed17 && placed18 && placed19 && placed20 || ending == true) {
     endScreen();
   }
-  }
-  
-  if (stage == 3) {//game1main
-    gameOver = false;
-    
-    clear();
-  background(255, 150, 150);
-    
-    if (
-    mouseX > displayWidth - 175 &&
-    mouseX < displayWidth &&
-    mouseY > displayHeight - 175 &&
-    mouseY < displayHeight
-  ) {
-    overHelp = true;
-} else {
-  overHelp = false;
-}
-if (
-    mouseX > 0 &&
-    mouseX < 175 &&
-    mouseY > displayHeight - 175 &&
-    mouseY < displayHeight
-  ) {
-    overHome = true;
-} else {
-  overHome = false;
-}
-    
-  fill(0,255,0);
-  strokeWeight(15);
-  stroke(255);
-  if (overHome == false) {
-  rect(10, displayHeight - 160, 150, 150, 30);
-  } else {
-    stroke(0,0,255);
-    rect(10, displayHeight - 160, 150, 150, 30);
-    stroke(255);
-  }
-  if (overHelp == false) {
-  rect(displayWidth - 160, displayHeight - 160, 150, 150, 30);
-  }
-  else {
-    stroke(0,0,255);
-    rect(displayWidth - 160, displayHeight - 160, 150, 150, 30);
-    stroke(255);
-  }
-  image(house, 25, displayHeight - 145, 120, 120);
-  image(help, displayWidth - 145, displayHeight - 145, 120, 120);
-    
-    
- 
-  
-  noStroke();
-  fill("purple");
-  textSize(30);
-  text("Score : " + score, displayWidth - 180, 55);
-  
-  noStroke();
-  fill(119, 225, 100);
-  textSize(30);
-  text("Match The Shapes!", (displayWidth / 2) + 50, 55);
-    
-    noStroke();
-  fill("purple");
-  textSize(30);
-  text("Tries : " + tries, displayWidth -(displayWidth - 100), 55);
-  
-    fill(119, 225, 100);
-  strokeWeight(5);
-  
-   if (mouseX >= rectSetup[2] && mouseX <= rectSetup[2] + rectSetup[6] && mouseY >= rectSetup[3] && mouseY <= rectSetup[3] + rectSetup[7] && mouseIsPressed){
-     rect1Clicked = true;
-     stroker1 = strokeColor[1];
-   }
-  stroke(stroker1);
-  rect(rectSetup[2], rectSetup[3] , rectSetup[6], rectSetup[7]);
-  
-  if (mouseX >= rectSetup[4] && mouseX <= rectSetup[4] + rectSetup[6] && mouseY >= rectSetup[5] && mouseY <= rectSetup[5] + rectSetup[7] && mouseIsPressed){
-     rect2Clicked = true;
-     stroker2 = strokeColor[1];
-  }
-  stroke(stroker2);
-  rect(rectSetup[4], rectSetup[5] , rectSetup[6], rectSetup[7]);
-  
-  if (mouseX >= cirSetup[2] - 50 && mouseX <= cirSetup[2] + 50 && mouseY >= cirSetup[3] - 50 && mouseY <= cirSetup[3] + 50 && mouseIsPressed){
-    cir1Clicked = true;
-    strokec1 = strokeColor[1];
-  }
-  stroke(strokec1);
-  circle(cirSetup[2], cirSetup[3], cirSetup[6]);
-  
-  if (mouseX >= cirSetup[4] - 50 && mouseX <= cirSetup[4] + 50 && mouseY >= cirSetup[5] - 50 && mouseY <= cirSetup[5] + 50 && mouseIsPressed){
-    cir2Clicked = true;
-    strokec2 = strokeColor[1];
-  }
-  stroke(strokec2);
-  circle(cirSetup[4], cirSetup[5], cirSetup[6]);
-  
-  if (mouseX >= elliSetup[2] - 50 && mouseX <= elliSetup[2] + 50 && mouseY >= elliSetup[3] - 50 && mouseY <= elliSetup[3] + 50 && mouseIsPressed){
-    el1Clicked = true;
-    strokee1 = strokeColor[1];
-  }
-  stroke(strokee1);
-  ellipse(elliSetup[2], elliSetup[3], elliSetup[6], elliSetup[7]);
-  
-  if (mouseX >= elliSetup[4] - 50 && mouseX <= elliSetup[4] + 50 && mouseY >= elliSetup[5] - 50 && mouseY <= elliSetup[5] + 50 && mouseIsPressed){
-    el2Clicked = true;
-    strokee2 = strokeColor[1];
-  }
-  stroke(strokee2);
-  ellipse(elliSetup[4], elliSetup[5], elliSetup[6], elliSetup[7]);
-  
-  if (mouseX >= triSetup[2] && mouseX <= triSetup[2] + 200 && mouseY >= triSetup[3] && mouseY <= triSetup[3] + 200 && mouseIsPressed){
-    tri1Clicked = true;
-    stroket1 = strokeColor[1];
-  }
-  stroke(stroket1);
-  triangle(triSetup[2], triSetup[3], triSetup[4], triSetup[5], triSetup[6], triSetup[7]);
-  
-  if (mouseX >= triSetup[8] && mouseX <= triSetup[8] + 200 && mouseY >= triSetup[9] && mouseY <= triSetup[9] + 200 && mouseIsPressed){
-    tri2Clicked = true;
-    stroket2 = strokeColor[1];
-  }
-  stroke(stroket2);
-  triangle(triSetup[8], triSetup[9], triSetup[10], triSetup[11], triSetup[12], triSetup[13]);
-  
-  
-  if (rect1Clicked && rect2Clicked){
-    
-    score += 100;
-    rectMatched = true;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-  }
-  
-  if (cir1Clicked && cir2Clicked){
-        
-    score += 100;
-    cirMatched = true;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    
-  }
-  
-  if (el1Clicked && el2Clicked){
-        
-    score += 100;
-    elMatched = true;
-    el1Clicked = false;
-    el2Clicked = false;
-    
-    
-  }
-  
-  if (tri1Clicked && tri2Clicked){
-    
-    score += 100;
-    triMatched = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    
-  }
-  
-  if (rectMatched){
-    stroker1 = strokeColor[2];
-    stroker2 = strokeColor[2];
-    rect1Clicked = false;
-    rect2Clicked = false;
-    if (playedRect == false) {
-      ding.play();
-      playedRect = true;
-    }
-  }
-  
-  if (cirMatched){
-    strokec1 = strokeColor[2];
-    strokec2 = strokeColor[2];
-    cir1Clicked = false;
-    cir2Clicked = false;
-    if (playedCir == false) {
-      ding.play();
-      playedCir = true;
-    }
-  }
-  
-  if (elMatched){
-    strokee1 = strokeColor[2];
-    strokee2 = strokeColor[2];
-    el1Clicked = false;
-    el2Clicked = false;
-    if (playedEl == false) {
-      ding.play();
-      playedEl = true;
-    }
-  }
-  
-  if (triMatched){
-    stroket1 = strokeColor[2];
-    stroket2 = strokeColor[2];
-    tri1Clicked = false;
-    tri2Clicked = false;
-    if (playedTri == false) {
-      ding.play();
-      playedTri = true;
-    }
-  }
-  
-  if ((rect1Clicked || rect2Clicked) && (cir1Clicked || cir2Clicked || el1Clicked || el2Clicked || tri1Clicked || tri2Clicked)){
-    
-    loseTry = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-      
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-      
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-      
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-      
-    }
-  }
-  
-  if ((cir1Clicked || cir2Clicked) && (rect1Clicked || rect2Clicked || el1Clicked || el2Clicked || tri1Clicked || tri2Clicked)){
-    
-    loseTry = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-      
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-      
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-      
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-      
-    }
-  }
-  
-  if ((el1Clicked || el2Clicked) && (rect1Clicked || rect2Clicked || cir1Clicked || cir2Clicked || tri1Clicked || tri2Clicked)){
-    
-    loseTry = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-      
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-      
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-      
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-      
-    }
-  }
-  
-  if ((tri1Clicked || tri2Clicked) && (rect1Clicked || rect2Clicked || el1Clicked || el2Clicked || cir1Clicked || cir2Clicked)){
-    
-    loseTry = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-      
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-      
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-      
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-      
-    }
-  }
-    
-    if (loseTry){
-      tries--;
-      loseTry = false;
-    }
-    
-    if (tries === 0){
-      
-      gameOver = true;
-      clear();
-  background(255, 150, 150);
-    
-    
-if (
-    mouseX > 0 &&
-    mouseX < 175 &&
-    mouseY > displayHeight - 175 &&
-    mouseY < displayHeight
-  ) {
-    overHome = true;
-} else {
-  overHome = false;
-}
-    
-  fill(0,255,0);
-  strokeWeight(15);
-  stroke(255);
-  if (overHome == false) {
-  rect(10, displayHeight - 160, 150, 150, 30);
-  } else {
-    stroke(0,0,255);
-    rect(10, displayHeight - 160, 150, 150, 30);
-    stroke(255);
-  }
-  
-  image(house, 25, displayHeight - 145, 120, 120);
-  
-      
-      text("Game Over", displayWidth / 2, displayHeight / 2);
-      text("Score : " + score, displayWidth / 2, (displayHeight / 2) + 50);
-      
-      reveal = false;
-    }
-    
-    if (score === 2400){
-      
-      gameOver = true;
-      clear();
-  background(255, 150, 150);
-    
-if (
-    mouseX > 0 &&
-    mouseX < 175 &&
-    mouseY > displayHeight - 175 &&
-    mouseY < displayHeight
-  ) {
-    overHome = true;
-} else {
-  overHome = false;
-}
-    
-  fill(0,255,0);
-  strokeWeight(15);
-  stroke(255);
-  if (overHome == false) {
-  rect(10, displayHeight - 160, 150, 150, 30);
-  } else {
-    stroke(0,0,255);
-    rect(10, displayHeight - 160, 150, 150, 30);
-    stroke(255);
-  }
-  
-  image(house, 25, displayHeight - 145, 120, 120);
-  text("YOU WIN!!!", displayWidth / 2, displayHeight / 2);
-  text("Score : " + score, displayWidth / 2, (displayHeight / 2) + 50)
-      reveal = false;
-      
-      
-    }
-    
-    if (reveal){
-      matchHelp = text("Click the shapes to match them!!!", displayWidth / 2, displayHeight - 100);
-    } else{
-      matchHelp = text("",0,0);
-    }
-  
-  if ((rectMatched && cirMatched && elMatched && triMatched) || gameOver){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    rectMatched = false;
-    cirMatched = false;
-    elMatched = false;
-    triMatched = false;
-    playedTri = false;
-    playedRect = false;
-    playedCir = false;
-    playedEl = false;
-    stroker1 = strokeColor[0];
-    stroker2 = strokeColor[0];
-    strokec1 = strokeColor[0];
-    strokec2 = strokeColor[0];
-    strokee1 = strokeColor[0];
-    strokee2 = strokeColor[0];
-    stroket1 = strokeColor[0];
-    stroket2 = strokeColor[0];
-    setPositions();
-    
-    
-  }
-  }
 }
 
-
-
-function mouseClicked() {
-  
-}
 
 function mousePressed() {
-  if (stage == 5) {
   if (overShape == true) {
     clicked = true;
     xOffset = mouseX - shapex;
@@ -1489,12 +906,10 @@ function mousePressed() {
     clicked20 = false;
   }
 }
-}
 
-var x;
+
 function mouseDragged() {
-  if (stage == 5) {
-    if (clicked && placed == false) {
+  if (clicked && placed == false) {
     shapex = mouseX - xOffset;
     shapey = mouseY - yOffset;
   }
@@ -1574,553 +989,10 @@ function mouseDragged() {
     shapex20 = mouseX - xOffset;
     shapey20 = mouseY - yOffset;
   }
-  }
-  
-  if (stage == 4) {
-    if (mouseY < displayHeight / 2 + 100) {
-      x = line(mouseX, mouseY, pmouseX, pmouseY);
-    }
-  }
 }
 
-function menu() {
-  clear();
-  createCanvas(displayWidth, displayHeight);
-  strokeWeight(15);
-  stroke(255);
-  background(255, 150, 150);
-  fill(0, 255, 0);
-  rect(displayWidth / 2 - 125, displayHeight / 2 +150 , 250, 100, 20);
-  textFont(font);
-  textSize(50);
-  textAlign(CENTER, CENTER);
-  fill("Purple");
-  text("Start", displayWidth / 2, displayHeight / 2 + 200);
-  textSize(150);
-  text("Some Mild", displayWidth / 2, displayHeight / 6);
-  text("Fun", displayWidth / 2, displayHeight / 4 + 80);
-}
-
-function menu2() {
-  music.loop();
-  clear();
-  background(255, 150, 150);
-  fill("purple");
-  textSize(70);
-  strokeWeight(15);
-  stroke(255);
-  text("Select a game", displayWidth / 2, displayHeight / 6);
-  fill(0, 255, 0);
-  rect(displayWidth / 4 - 50, displayHeight / 3, 150, 100, 20);
-  rect((2 * displayWidth) / 4 - 50, displayHeight / 3, 150, 100, 20);
-  rect((3 * displayWidth) / 4 - 50, displayHeight / 3, 150, 100, 20);
-  image(bits, 3 * displayWidth / 4 - bits.width / 2, displayHeight / 3 + 120);
-  image(preview, displayWidth / 4 - 100, displayHeight / 3 + 120, preview.width * 0.8, preview.height * 0.8);
-  image(preview2, 2 * displayWidth / 4 - preview2.width * 0.7 / 2, displayHeight / 3 + 120, preview2.width * 0.7, preview2.width * 0.7);
-  rect(15, (4 * displayHeight) / 6, 100, 100, 30);
-  textSize(30);
-  fill("purple");
-  strokeWeight(5);
-  text("Game 1", displayWidth / 4 + 25, displayHeight / 3 + 50);
-  text("Game 2", (2 * displayWidth) / 4 + 25, displayHeight / 3 + 50);
-  text("Pick-Up", (3 * displayWidth) / 4 + 25, displayHeight / 3 + 30);
-  text("Bits", displayWidth *3 /4 + 25, displayHeight / 3 + 70);
-  image(home, 30, (4 * displayHeight) / 6 + 15, 70, 70);
-}
-
-function game1() {//game1
-
-  clear();
-  background(255, 150, 150);
-  
-  noStroke();
-  fill("purple");
-  textSize(30);
-  text("Score : " + score, displayWidth - 170, 55);
-  
-  noStroke();
-  fill(119, 225, 100);
-  textSize(30);
-  text("Match The Shapes!", (displayWidth / 2) - 130, 55);
-  
-  strokeWeight(5);
-  
-   if (mouseX >= rectSetup[2] && mouseX <= rectSetup[2] + rectSetup[6] && mouseY >= rectSetup[3] && mouseY <= rectSetup[3] + rectSetup[7] && mouseIsPressed){
-     rect1Clicked = true;
-     stroker1 = strokeColor[1];
-   }
-  stroke(stroker1);
-  rect(rectSetup[2], rectSetup[3] , rectSetup[6], rectSetup[7]);
-  
-  if (mouseX >= rectSetup[4] && mouseX <= rectSetup[4] + rectSetup[6] && mouseY >= rectSetup[5] && mouseY <= rectSetup[5] + rectSetup[7] && mouseIsPressed){
-     rect2Clicked = true;
-     stroker2 = strokeColor[1];
-  }
-  stroke(stroker2);
-  rect(rectSetup[4], rectSetup[5] , rectSetup[6], rectSetup[7]);
-  
-  if (mouseX >= cirSetup[2] - 50 && mouseX <= cirSetup[2] + 50 && mouseY >= cirSetup[3] - 50 && mouseY <= cirSetup[3] + 50 && mouseIsPressed){
-    cir1Clicked = true;
-    strokec1 = strokeColor[1];
-  }
-  stroke(strokec1);
-  circle(cirSetup[2], cirSetup[3], cirSetup[6]);
-  
-  if (mouseX >= cirSetup[4] - 50 && mouseX <= cirSetup[4] + 50 && mouseY >= cirSetup[5] - 50 && mouseY <= cirSetup[5] + 50 && mouseIsPressed){
-    cir2Clicked = true;
-    strokec2 = strokeColor[1];
-  }
-  stroke(strokec2);
-  circle(cirSetup[4], cirSetup[5], cirSetup[6]);
-  
-  if (mouseX >= elliSetup[2] - 50 && mouseX <= elliSetup[2] + 50 && mouseY >= elliSetup[3] - 50 && mouseY <= elliSetup[3] + 50 && mouseIsPressed){
-    el1Clicked = true;
-    strokee1 = strokeColor[1];
-  }
-  stroke(strokee1);
-  ellipse(elliSetup[2], elliSetup[3], elliSetup[6], elliSetup[7]);
-  
-  if (mouseX >= elliSetup[4] - 50 && mouseX <= elliSetup[4] + 50 && mouseY >= elliSetup[5] - 50 && mouseY <= elliSetup[5] + 50 && mouseIsPressed){
-    el2Clicked = true;
-    strokee2 = strokeColor[1];
-  }
-  stroke(strokee2);
-  ellipse(elliSetup[4], elliSetup[5], elliSetup[6], elliSetup[7]);
-  
-  if (mouseX >= triSetup[2] && mouseX <= triSetup[2] + 200 && mouseY >= triSetup[3] && mouseY <= triSetup[3] + 200 && mouseIsPressed){
-    tri1Clicked = true;
-    stroket1 = strokeColor[1];
-  }
-  stroke(stroket1);
-  triangle(triSetup[2], triSetup[3], triSetup[4], triSetup[5], triSetup[6], triSetup[7]);
-  
-  if (mouseX >= triSetup[8] && mouseX <= triSetup[8] + 200 && mouseY >= triSetup[9] && mouseY <= triSetup[9] + 200 && mouseIsPressed){
-    tri2Clicked = true;
-    stroket2 = strokeColor[1];
-  }
-  stroke(stroket2);
-  triangle(triSetup[8], triSetup[9], triSetup[10], triSetup[11], triSetup[12], triSetup[13]);
-  
-  
-  if (rect1Clicked && rect2Clicked){
-    
-    score += 100;
-    rectMatched = true;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-  }
-  
-  if (cir1Clicked && cir2Clicked){
-        
-    score += 100;
-    cirMatched = true;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    
-  }
-  
-  if (el1Clicked && el2Clicked){
-        
-    score += 100;
-    elMatched = true;
-    el1Clicked = false;
-    el2Clicked = false;
-    
-    
-  }
-  
-  if (tri1Clicked && tri2Clicked){
-    
-    score += 100;
-    triMatched = true;
-    tri1Clicked = false;
-    tri2Clicked = false;
-    
-  }
-  
-  if (rectMatched){
-    stroker1 = strokeColor[2];
-    stroker2 = strokeColor[2];
-  }
-  
-  if (cirMatched){
-    strokec1 = strokeColor[2]
-    strokec2 = strokeColor[2];
-  }
-  
-  if (elMatched){
-    strokee1 = strokeColor[2];
-    strokee2 = strokeColor[2];
-  }
-  
-  if (triMatched){
-    stroket1 = strokeColor[2];
-    stroket2 = strokeColor[2];
-  }
-  
-  if ((rect1Clicked || rect2Clicked) && (cir1Clicked || cir2Clicked || el1Clicked || el2Clicked || tri1Clicked || tri2Clicked)){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-    }
-  }
-  
-  if ((cir1Clicked || cir2Clicked) && (rect1Clicked || rect2Clicked || el1Clicked || el2Clicked || tri1Clicked || tri2Clicked)){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-    }
-  }
-  
-  if ((el1Clicked || el2Clicked) && (rect1Clicked || rect2Clicked || cir1Clicked || cir2Clicked || tri1Clicked || tri2Clicked)){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-    }
-  }
-  
-  if ((tri1Clicked || tri2Clicked) && (rect1Clicked || rect2Clicked || el1Clicked || el2Clicked || cir1Clicked || cir2Clicked)){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    
-    if (!rectMatched){
-      stroker1 = strokeColor[0];
-      stroker2 = strokeColor[0];
-    }
-    
-    if (!cirMatched){
-      strokec1 = strokeColor[0];
-      strokec2 = strokeColor[0];
-    }
-    if (!elMatched){
-      strokee1 = strokeColor[0];
-      strokee2 = strokeColor[0];
-    }
-    if (!triMatched){
-      stroket1 = strokeColor[0];
-      stroket2 = strokeColor[0];
-    }
-  }
-  
-  if (rectMatched && cirMatched && elMatched && triMatched){
-    
-    tri1Clicked = false;
-    tri2Clicked = false;
-    el1Clicked = false;
-    el2Clicked = false;
-    cir1Clicked = false;
-    cir2Clicked = false;
-    rect1Clicked = false;
-    rect2Clicked = false;
-    rectMatched = false;
-    cirMatched = false;
-    elMatched = false;
-    triMatched = false;
-    stroker1 = strokeColor[0];
-    stroker2 = strokeColor[0];
-    strokec1 = strokeColor[0];
-    strokec2 = strokeColor[0];
-    strokee1 = strokeColor[0];
-    strokee2 = strokeColor[0];
-    stroket1 = strokeColor[0];
-    stroket2 = strokeColor[0];
-    setPositions();
-    
-    
-  }
-  
-}
-
-function game2() {
-  clear();
-  background(255, 150, 150);
-  textSize(50);
-  strokeWeight(5);
-  fill("purple");
-  text("Tracing", displayWidth / 2, displayHeight / 6);
-  fill(0,255,0);
-  strokeWeight(15);
-  rect(15, (4 * displayHeight) / 6, 100, 100, 30);
-  rect(displayWidth - 115, (4 * displayHeight) / 6, 100, 100, 30);
-  rect(displayWidth / 2 - 100, 1, 200, 50, 0);
-  rect(displayWidth / 2 - 100, (4 * displayHeight) / 6, 200, 100, 30);
-  fill("purple");
-  textSize(30);
-  image(home, 30, (4 * displayHeight) / 6 + 15, 70, 70);
-  image(help, displayWidth - 100, (4 * displayHeight) / 6 + 15, 70, 70);
-  strokeWeight(5);
-  text("Score: " + score, displayWidth / 2 , 25);
-  text("Done?", displayWidth / 2, (4 * displayHeight) / 6 + 50);
-  textSize(150);
-  strokeWeight(10);
-  words = ["A", "B", "C", "D"];
-  word = random(words);
-  textFont('Helvetica');
-  text(word, displayWidth / 2, displayHeight / 2);
-  textFont(font);
-  if( score >= 500)
-    {
-      endGame2()
-      score = 0;
-    }
-}
-function endGame2()
-{
-  clear();
-  background(255,150,150)
-  fill(119, 225, 100);
-  rect(0, (4 * displayHeight) / 6, 100, 100, 30);
-  fill("purple");
-  text("You won!!", displayWidth / 2, displayHeight / 6);
-  textSize(30);
-  image(home, 15, (4 * displayHeight) / 6 + 15, 70, 70);
-  ding.play()
-}
-
-function helpGame2() {
-  clear();
-  background(255, 150, 150);
-  textSize(50);
-  strokeWeight(1);
-  fill(119, 225, 100);
-  rect(0, (4 * displayHeight) / 6, 100, 100, 30);
-  fill("purple");
-  text("Help Game 2", displayWidth / 2, displayHeight / 6);
-  textSize(30);
-  image(home, 15, (4 * displayHeight) / 6 + 15, 70, 70);
-  text(
-    "A random letter will appear \ntrace it\nhold down left click and drag\nclick done to get your score",
-    displayWidth / 2,
-    (2 * displayHeight) / 6
-  );
-}
-
-function checkTrace() {
-  
-  text("", displayWidth / 2, displayHeight / 2);
-  print(x);
-  print("pmouseX: " + x.pmouseX)
-  print("pmouseY: " + x.pmouseY)
-  print("pwinMouseX: " + x.pwinMouseX)
-  print("pwinMouseY: " + x.pwinMouseY)
-  print("mouseX: " + x.mouseX)
-  print("mouseY: " + x.mouseY)
-  print("winMouseX: " + x.winMouseX)
-  print("winMouseY: " + x.winMouseY)
-  print(displayWidth)
-  print(displayHeight)
-  ding.play()
-  score += 100
-  game2()
-}
-
-function game3() {
-  //window.open("https://editor.p5js.org/dwfishe1/full/aGd-QPiPo")
-  /*
-  clear();
-  background(255, 105, 97);
-  fill("purple");
-  text("Game 3", 300, 200);
-  fill(119, 225, 100);
-  rect(0, (4 * displayHeight) / 6, 100, 100, 30);
-  fill("purple");
-  image(home, 15, (4 * displayHeight) / 6 + 15, 70, 70);
-  */
-}
 function mouseReleased() {
-  if (stage == 2) {
-    if (
-      mouseX > displayWidth / 4 - 50 &&
-      mouseX < displayWidth / 4 + 50 &&
-      mouseY > displayHeight / 3 &&
-      mouseY < displayHeight / 3 + 100
-    ) {
-      game1();
-      gameOver = false;
-      reveal = false;
-      tries = 4;
-      score = 0;
-      stage = 3;
-      
-    } else if (
-      mouseX > (2 * displayWidth) / 4 - 50 &&
-      mouseX < (2 * displayWidth) / 4 + 50 &&
-      mouseY > displayHeight / 3 &&
-      mouseY < displayHeight / 3 + 100
-    ) {
-      game2();
-      stage = 4;
-    } else if (
-      mouseX > (3 * displayWidth) / 4 - 50 &&
-      mouseX < (3 * displayWidth) / 4 + 50 &&
-      mouseY > displayHeight / 3 &&
-      mouseY < displayHeight / 3 + 100
-    ) {
-      game3();
-      stage = 5;
-    } else if (
-      mouseX > 0 &&
-      mouseX < 100 &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      menu();
-      stage = 1;
-    }
-    
-  } else if (stage == 3) {//game1
-    if (
-      mouseX > 10 &&
-      mouseX < 160 &&
-      mouseY > displayHeight - 160 &&
-      mouseY < displayHeight - 10
-    ) {
-      menu2();
-      score = 0;
-      stage = 2;
-      
-    }
-    
-    if (mouseX > displayWidth - 160 && mouseX < displayWidth && mouseY > displayHeight - 160 && mouseY < displayHeight){
-      reveal = true;
-    }
-  } else if (stage == 4) {
-    if (
-      mouseX > 0 &&
-      mouseX < 100 &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      menu2();
-      score = 0;
-      stage = 2;
-    } else if (
-      mouseX > displayWidth - 100 &&
-      mouseX < displayWidth &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      helpGame2();
-      stage = 6;
-    } else if (
-      mouseX > displayWidth / 2 - 100 &&
-      mouseX < displayWidth / 2 + 100 &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      checkTrace();
-    }
-  } else if (stage == 5) {
-    if (
-      mouseX > 0 &&
-      mouseX < 100 &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      menu2();
-      score = 0;
-      stage = 2;
-    }
-  } else if (stage == 6) {
-    if (
-      mouseX > 0 &&
-      mouseX < 100 &&
-      mouseY > (4 * displayHeight) / 6 &&
-      mouseY < (4 * displayHeight) / 6 + 100
-    ) {
-      game2();
-      stage = 4;
-    }
-  }
-  if (
-    stage == 1 &&
-    mouseX > displayWidth / 2 - 125 &&
-    mouseX < displayWidth / 2 + 125 &&
-    mouseY > displayHeight / 2 + 150 &&
-    mouseY < displayHeight / 2 + 250
-  ) {
-    menu2();
-    stage = 2;
-  }
-  if (stage == 5) {
-    locked = false;
+  locked = false;
   if(clickedHelp){
     runDemo = true;
     clickedHelp = false;
@@ -2277,8 +1149,8 @@ function mouseReleased() {
      scoreSubtractor = 0;
   }
   }
-    if (shapex > trayx &&
-     shapex < trayx + 200 &&
+    if (shapex11 > trayx &&
+     shapex11 < trayx + 200 &&
       shapey11 > displayHeight/2 - 250 &&
       shapey11 < displayHeight/2 - 250 + 400 &&
        placed11 == false) {
@@ -2433,24 +1305,10 @@ function mouseReleased() {
   }
   if (overReset) {  
     resetSketch();
-    music.play();
-  }
-  if (overHome) {
-    resetSketch();
-    stage = 2;
-    menu2();
-  }
-    
-  if (overExit) {
-    resetSketch();
-    stage = 2;
-    menu2();
   }
     xOffset = 0;
     yOffset = 0;
-  }
 }
-
 function gui () {
   fill(0,255,0);
   strokeWeight(15);
@@ -2479,8 +1337,9 @@ function gui () {
   textFont(font);
   textAlign(CENTER);
   textSize(50);
-  text("Score: " + score, displayWidth/2, 42);
+  text("Score: " + score, displayWidth/2, 60);
 }
+
 function Demo () {
   if (pointerx != rectx - 40 && pointery != recty && phase1 == false) {
   pointerx -= 1.625;
@@ -2580,8 +1439,8 @@ function endScreen() {
   rect(displayWidth - 320, 525, 300,150, 30);
   stroke(255)
   textSize(50);
-  text("Play Again", 165, 600);
-  text("Exit", displayWidth - 170, 600);
+  text("Play\nAgain", 165, 585);
+  text("Exit", displayWidth - 170, 615);
 }
 
 function resetSketch () {
@@ -2697,13 +1556,9 @@ scoreSubtractor = 0;
 phase1 = false;
 phase2 = false;
 phase3 = false;
-  phase4 = false;
-  counter = 0;
+phase4 = false;
+counter = 0;
   ending = false;
   overReset = false;
   overExit = false;
-  endMusicPlay = false;
-}
-function loaded() {
-  music.play();
 }
